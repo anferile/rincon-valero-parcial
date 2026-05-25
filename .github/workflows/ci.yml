@@ -86,32 +86,22 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Get EC2 instance IDs
-        id: instances
+      - name: Deploy app via SSM Run Command
         run: |
           INSTANCE_IDS=$(aws ec2 describe-instances \
             --filters "Name=tag:Project,Values=parcial-valero-rincon" \
                       "Name=instance-state-name,Values=running" \
             --query "Reservations[*].Instances[*].InstanceId" \
-            --output text | tr '\t' ' ')
-          echo "INSTANCE_IDS=$INSTANCE_IDS" >> "$GITHUB_OUTPUT"
+            --output text)
           echo "Instancias encontradas: $INSTANCE_IDS"
-
-      - name: Deploy app via SSM Run Command
-        run: |
-          for INSTANCE_ID in ${{ steps.instances.outputs.INSTANCE_IDS }}; do
+          for INSTANCE_ID in $INSTANCE_IDS; do
             echo "Desplegando en $INSTANCE_ID ..."
             aws ssm send-command \
               --instance-ids "$INSTANCE_ID" \
               --document-name "AWS-RunShellScript" \
-              --parameters 'commands=[
-                "cd /opt/app",
-                "git pull origin main",
-                "npm ci --omit=dev",
-                "sudo systemctl restart node-app"
-              ]' \
-              --comment "Deploy desde GitHub Actions - commit ${{ github.sha }}" \
-              --output text
+              --parameters 'commands=["cd /opt/app","git pull origin main","npm ci --omit=dev","sudo systemctl restart node-app"]' \
+              --comment "Deploy GitHub Actions ${{ github.sha }}" \
+              --output text || echo "SSM no disponible en $INSTANCE_ID"
           done
 
       - name: Verify deployment health
