@@ -93,8 +93,8 @@ jobs:
             --filters "Name=tag:Project,Values=parcial-valero-rincon" \
                       "Name=instance-state-name,Values=running" \
             --query "Reservations[*].Instances[*].InstanceId" \
-            --output text)
-          echo "INSTANCE_IDS=$INSTANCE_IDS" >> $GITHUB_OUTPUT
+            --output text | tr '\t' ' ')
+          echo "INSTANCE_IDS=$INSTANCE_IDS" >> "$GITHUB_OUTPUT"
           echo "Instancias encontradas: $INSTANCE_IDS"
 
       - name: Deploy app via SSM Run Command
