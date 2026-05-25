@@ -115,12 +115,16 @@ jobs:
               --output text
           done
 
-      - name: Verify deployment health
+     - name: Verify deployment health
         run: |
           echo "Esperando 15s para que el servicio reinicie..."
           sleep 15
           ALB_DNS=$(aws elbv2 describe-load-balancers \
-            --query "LoadBalancers[?contains(LoadBalancerName, 'parcial')].DNSName" \
-            --output text)
+            --query "LoadBalancers[].DNSName" \
+            --output text | tr '\t' '\n' | grep -i parcial | head -1)
           echo "ALB DNS: $ALB_DNS"
-          curl -f "http://$ALB_DNS/health" && echo "✅ Health check OK" || echo "⚠️ Health check falló"
+          if [ -z "$ALB_DNS" ]; then
+            echo "⚠️ No se encontró el ALB, saltando health check"
+            exit 0
+          fi
+          curl -f "http://${ALB_DNS}/health" && echo "✅ Health check OK" || echo "⚠️ Health check falló"
