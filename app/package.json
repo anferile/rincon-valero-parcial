@@ -1,6 +1,6 @@
 {
   "name": "parcial-valero-aws-api",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "description": "API REST Node.js sobre AWS (ALB + EC2 + RDS MySQL)",
   "main": "server.js",
   "scripts": {
