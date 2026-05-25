@@ -1,6 +1,6 @@
 {
   "name": "parcial-valero-aws-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "API REST Node.js sobre AWS (ALB + EC2 + RDS MySQL)",
   "main": "server.js",
   "scripts": {
@@ -13,7 +13,13 @@
     "lint:fix": "eslint . --ext .js --ignore-pattern node_modules/ --fix",
     "seed": "node src/db/seed.js"
   },
-  "keywords": ["aws", "devops", "terraform", "express", "mysql"],
+  "keywords": [
+    "aws",
+    "devops",
+    "terraform",
+    "express",
+    "mysql"
+  ],
   "author": "Grupo Parcial Valero",
   "license": "ISC",
   "type": "commonjs",
@@ -34,7 +40,11 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "testMatch": ["**/tests/**/*.test.js"],
-    "collectCoverageFrom": ["src/**/*.js"]
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
   }
 }
