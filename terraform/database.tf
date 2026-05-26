@@ -58,7 +58,7 @@ resource "aws_db_instance" "replica" {
   })
 
   depends_on = [aws_db_instance.main]
-  
+
   lifecycle {
     ignore_changes = [
       password,
