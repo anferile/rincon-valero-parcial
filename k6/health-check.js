@@ -4,7 +4,7 @@ import { Rate } from "k6/metrics";
 
 const BASE_URL =
   __ENV.BASE_URL ||
-  "http://parcial-valero-rincon-prod-alb-800812281.us-east-1.elb.amazonaws.com";
+  "http://parcial-valero-rincon-prod-alb-954115497.us-east-1.elb.amazonaws.com";
 
 const errorRate = new Rate("custom_errors");
 
