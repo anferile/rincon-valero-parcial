@@ -55,12 +55,13 @@ jobs:
         with:
           terraform_version: "1.7.5"
           terraform_wrapper: false
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: terraform fmt -check
         run: terraform fmt -check -recursive
 
-      - name: terraform init (backend=false)
-        run: terraform init -backend=false -input=false
+      - name: terraform init
+        run: terraform init -input=false
 
       - name: terraform validate
         env:
@@ -93,6 +94,7 @@ jobs:
         with:
           terraform_version: "1.7.5"
           terraform_wrapper: false
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform init
         working-directory: ./terraform
