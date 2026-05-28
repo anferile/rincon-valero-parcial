@@ -1,6 +1,14 @@
 terraform {
   required_version = ">= 1.5.0"
 
+  backend "remote" {
+    organization = "parcial-valero"
+
+    workspaces {
+      name = "parcial-valero-rincon"
+    }
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
